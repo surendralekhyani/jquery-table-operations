@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style type="text/css">
+    #main{
+      background-color: lightgrey;
+      width: 600px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    #btnSave{
+      width:100px;
+      height: 40px;
+      background-color: blue;
+      color: white;
+    }
+
+    .ed{
+      color: green;
+      cursor: pointer;
+    }
+
+    .del{
+      color: red;
+      cursor: pointer;
+    }
+    table, td{
+      border:1px solid black; 
+      border-collapse: collapse;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+    <div id="main">
+      <lable>Name &nbsp;</lable>
+      <input type="text" id="txtItemName" autofocus="true">
+      <lable style="margin-left: 20px;">S.Price</lable>
+      <input type="number" id="txtSp">
+      <br>
+      <br>
+      <button id="btnSave">Save</button>
+      <br>
+      <br>
+      <div style="background-color: #fff; height: 300px; overflow: auto; padding:5px; ">
+        <table id="tbl" style="width:100%;">
+          <thead>
+            <tr>
+              <td>Edit</td>
+              <td>Delete</td>
+              <td>Item Name</td>
+              <td>S. Price</td>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+          <tfoot>
+
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    
+
+    <script>
+    $(document).ready(function(){
+
+      $("#btnSave").on("click", saveRecord);
+
+       
+    });
+
+    function saveRecord()
+    {
+        if( $("#txtItemName").val().trim().length == 0 )
+        {
+          alert("Item name can not be blank...");
+          return;
+        }
+        else if( $("#txtSp").val().trim().length == 0 )
+        {
+          alert("Selling price can not be blank...");
+          return;
+        }
+
+        if( $("#btnSave").text() == "Save" )
+        {
+          $("#tbl tbody").append("<tr><td class='ed'>Edit</td><td class='del'>Del</td><td>" 
+                + $("#txtItemName").val().trim() + 
+                "</td><td>" + $("#txtSp").val().trim() + 
+                "</td></tr>");
+        }
+        else if( $("#btnSave").text() == "Update" )
+        {
+          $("#tbl tbody").find("tr:eq(" + globalRowId + ")").find("td:eq(2)").text( $("#txtItemName").val().trim() );
+          $("#tbl tbody").find("tr:eq(" + globalRowId + ")").find("td:eq(3)").text( $("#txtSp").val().trim() );
+
+          $("#btnSave").text("Save");
+
+        }
+
+        $(".del").off();
+        $(".del").on("click", deleteRecord);    
+
+        $(".ed").off();
+        $(".ed").on("click", editRecord);     
+
+        $("#txtItemName").val(''); 
+        $("#txtSp").val(''); 
+
+        $("#txtItemName").focus();
+    }
+
+    function deleteRecord()
+    {
+      $(this).parent().remove();
+    }
+
+    var globalRowId = "-1";
+    function editRecord()
+    {
+      globalRowId = $(this).parent().index();
+      // console.log(globalRowId);
+      $("#txtItemName").val( $(this).nextAll().eq(1).text() );
+      $("#txtSp").val( $(this).nextAll().eq(2).text() );
+
+      $("#btnSave").text("Update");
+    }
+
+</script>
+</body>
+</html>
