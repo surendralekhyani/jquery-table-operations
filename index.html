@@ -124,7 +124,7 @@
     {
       var found = 0;
       $("#tbl tbody tr").each(function(){
-        if( $(this).find("td:eq(2)").text() == $("#txtItemName").val().trim() )
+        if( $(this).find("td:eq(2)").text().toUpperCase() == $("#txtItemName").val().trim().toUpperCase() )
         {
           found=1;
           return false;
