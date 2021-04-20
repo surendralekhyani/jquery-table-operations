@@ -89,6 +89,12 @@
 
         if( $("#btnSave").text() == "Save" )
         {
+          var c = checkDuplicate();
+          if (c == 1)
+          {
+            alert("Duplicate...");
+            return;
+          }
           $("#tbl tbody").append("<tr><td class='ed'>Edit</td><td class='del'>Del</td><td>" 
                 + $("#txtItemName").val().trim() + 
                 "</td><td>" + $("#txtSp").val().trim() + 
@@ -113,6 +119,18 @@
         $("#txtSp").val(''); 
 
         $("#txtItemName").focus();
+    }
+    function checkDuplicate()
+    {
+      var found = 0;
+      $("#tbl tbody tr").each(function(){
+        if( $(this).find("td:eq(2)").text() == $("#txtItemName").val().trim() )
+        {
+          found=1;
+          return false;
+        }
+      });
+      return found;
     }
 
     function deleteRecord()
